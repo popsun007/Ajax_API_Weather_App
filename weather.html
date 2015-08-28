@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset="utf-8">
+        <title>Weather</title>
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+        <script>
+        	$(document).ready(function(){
+
+        		$('form').submit(function(){
+        			var input = $('input').val();
+        			$.get("http://api.openweathermap.org/data/2.5/weather?q=" + input,function(res){
+        				console.log(res);
+        				var show = "";
+        				show += "<h2>" + res.name + "</h2>";
+        				show += "<h4>Temperature: ";
+        			 	var temp = res.main.temp * 9 / 5 - 459.67;
+        				temp = parseFloat(temp).toFixed(0); // or round();
+        				show += temp + "F</h4>";
+        				show += "<h4>Humidty: ";
+        				show += res.main.humidity + "%</h4>";
+        				show += "<h4>Description: ";
+        				show += res.weather[0].main + "</h4>";
+        				$('.show').html(show);
+        			}, "json");
+        			return false;
+        		})
+
+        	})
+        </script>
+    </head>
+    <body>
+    	<div class="container">
+    		<h2>Entry the city your want to know:</h2>
+    		<form action="process.php" method="post">
+	     	   <input type="text" class="city">
+	     	   <input type="submit" value="Search Weather">
+        	</form>
+        	<div class="show"></div>
+    	</div>
+    </body>
+</html>
